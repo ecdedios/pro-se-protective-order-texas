@@ -1,0 +1,97 @@
+{
+  "name": "tx-protective-order-corpus",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Edm.String",
+      "key": true,
+      "filterable": true,
+      "searchable": false,
+      "retrievable": true
+    },
+    {
+      "name": "content",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "analyzer": "en.microsoft"
+    },
+    {
+      "name": "content_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "retrievable": false,
+      "dimensions": 1536,
+      "vectorSearchProfile": "default-vector-profile"
+    },
+    {
+      "name": "source_type",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "facetable": true,
+      "retrievable": true
+    },
+    {
+      "name": "county",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "facetable": true,
+      "retrievable": true
+    },
+    {
+      "name": "citation",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true
+    },
+    {
+      "name": "last_verified_date",
+      "type": "Edm.DateTimeOffset",
+      "searchable": false,
+      "filterable": true,
+      "sortable": true,
+      "retrievable": true
+    }
+  ],
+  "vectorSearch": {
+    "algorithms": [
+      {
+        "name": "default-hnsw",
+        "kind": "hnsw",
+        "hnswParameters": {
+          "m": 4,
+          "efConstruction": 400,
+          "efSearch": 500,
+          "metric": "cosine"
+        }
+      }
+    ],
+    "profiles": [
+      {
+        "name": "default-vector-profile",
+        "algorithm": "default-hnsw"
+      }
+    ]
+  },
+  "semantic": {
+    "configurations": [
+      {
+        "name": "default-semantic-config",
+        "prioritizedFields": {
+          "titleField": {
+            "fieldName": "citation"
+          },
+          "prioritizedContentFields": [
+            {
+              "fieldName": "content"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
